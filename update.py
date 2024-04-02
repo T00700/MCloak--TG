@@ -44,7 +44,7 @@ def update_file(src, dest, ignore):
 
 def updates(src, dest, ignore):
     """更新程序"""
-    remote_url = "https://github.com/seo888/MyCloak.git"
+    remote_url = "https://github.com/seo888/MCloak.git"
     if os.path.exists(src):
         del_dir(src)
     print(f'{remote_url} 下载中...')

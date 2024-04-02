@@ -6,3 +6,4 @@
 *.log
 lock
 func/__pycache__
+repo
