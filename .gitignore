@@ -1,3 +1,8 @@
 /.pyarmor
 /jiami.py
 /pyarmor-regfile-4374.zip
+*.zip
+.gitignore
+*.log
+lock
+func/__pycache__
