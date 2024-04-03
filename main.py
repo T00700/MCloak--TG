@@ -63,7 +63,7 @@ async def favicon(request: Request):
     result = JSONResponse(status_code=404,
                           content={"error": './favicon.ico 不存在'})
     if os.path.exists('./favicon.ico'):
-        result = FileResponse("favicon.ico", media_type="image/x-icon")
+        result = FileResponse("./favicon.ico", media_type="image/x-icon")
     return result
 
 
