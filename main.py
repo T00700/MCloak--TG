@@ -42,7 +42,7 @@ fh = logging.handlers.RotatingFileHandler("./logs/api.log",
                                           maxBytes=100 * 1024,
                                           backupCount=3)
 formatter = logging.Formatter(
-    "%(asctime)s - %(module)s - %(funcName)s - line:%(lineno)d - %(levelname)s - %(message)s"
+    "[%(asctime)s] %(message)s"
 )
 
 ch.setFormatter(formatter)
