@@ -17,7 +17,7 @@ from starlette.middleware.gzip import GZipMiddleware
 from starlette.templating import Jinja2Templates
 from func.middleware import Mid
 
-app = FastAPI()
+app = FastAPI(access_log=False)
 # gzip流文件处理
 app.add_middleware(GZipMiddleware, minimum_size=600)
 # 静态文件路径设置
@@ -31,6 +31,7 @@ app.state.executor = ThreadPoolExecutor(32)
 app.state.templates = Jinja2Templates(directory="page")
 # 配置日志记录器
 
+logging.getLogger('httpx').setLevel(logging.ERROR)
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
