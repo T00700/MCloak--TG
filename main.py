@@ -3,6 +3,8 @@
 MyCloak V1.0 | by TG@seo898
 """
 
+import logging
+from logging.handlers import TimedRotatingFileHandler
 from concurrent.futures import ThreadPoolExecutor
 import os
 from fastapi.responses import FileResponse, RedirectResponse
@@ -27,6 +29,26 @@ app.state.func = Func()
 app.state.executor = ThreadPoolExecutor(32)
 # 创建一个templates（模板）对象，以后可以重用。
 app.state.templates = Jinja2Templates(directory="page")
+# 配置日志记录器
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+# fh = logging.FileHandler(filename='./server.log')
+os.makedirs('./logs', exist_ok=True)
+fh = logging.handlers.RotatingFileHandler("./logs/api.log",
+                                          mode="a",
+                                          maxBytes=100 * 1024,
+                                          backupCount=3)
+formatter = logging.Formatter(
+    "%(asctime)s - %(module)s - %(funcName)s - line:%(lineno)d - %(levelname)s - %(message)s"
+)
+
+ch.setFormatter(formatter)
+fh.setFormatter(formatter)
+logger.addHandler(ch)  #将日志输出至屏幕
+logger.addHandler(fh)  #将日志输出至文件
+app.state.logger = logger
 
 
 @app.exception_handler(Exception)
