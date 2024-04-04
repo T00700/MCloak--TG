@@ -39,8 +39,8 @@ ch = logging.StreamHandler()
 os.makedirs('./logs', exist_ok=True)
 fh = logging.handlers.RotatingFileHandler("./logs/api.log",
                                           mode="a",
-                                          maxBytes=100 * 1024,
-                                          backupCount=3)
+                                          maxBytes=10240 * 1024,
+                                          backupCount=1)
 formatter = logging.Formatter(
     "[%(asctime)s] %(message)s"
 )
