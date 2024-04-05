@@ -87,6 +87,12 @@ async def favicon(request: Request):
     return result
 
 
+@app.get("/exe/{path:path}")
+async def exe(request: Request, response: Response, path=""):
+    new_path = f"/static/exe/{path}"
+    return RedirectResponse(url=new_path, status_code=301)
+
+
 @app.get("{path:path}")
 async def route(request: Request, response: Response, path=""):
     """主路由"""
