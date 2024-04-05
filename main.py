@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-MyCloak V1.0 | by TG@seo898
+MyCloak V1.1 | by TG@seo898
 """
 
 import logging
@@ -30,7 +30,6 @@ app.state.executor = ThreadPoolExecutor(32)
 # 创建一个templates（模板）对象，以后可以重用。
 app.state.templates = Jinja2Templates(directory="page")
 # 配置日志记录器
-
 logging.getLogger('httpx').setLevel(logging.ERROR)
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -41,15 +40,13 @@ fh = logging.handlers.RotatingFileHandler("./logs/api.log",
                                           mode="a",
                                           maxBytes=10240 * 1024,
                                           backupCount=1)
-formatter = logging.Formatter(
-    "[%(asctime)s] %(message)s"
-)
-
+formatter = logging.Formatter("[%(asctime)s] %(message)s")
 ch.setFormatter(formatter)
 fh.setFormatter(formatter)
 logger.addHandler(ch)  #将日志输出至屏幕
 logger.addHandler(fh)  #将日志输出至文件
 app.state.logger = logger
+app.state.ip_cache = {}
 
 
 @app.exception_handler(Exception)
