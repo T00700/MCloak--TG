@@ -104,7 +104,7 @@ async def route(request: Request, response: Response, path=""):
                                                     media_type="text/html")
     mode = request.state.config["【斗篷设置】"]['模式']
     if mode == '正常':
-        return app.state.templates.TemplateResponse('index.html',
+        return app.state.templates.TemplateResponse(request.state.config["【蜘蛛策略】"]["正常页面"],
                                                     datas,
                                                     media_type="text/html")
     elif mode == '广告':
