@@ -16,6 +16,7 @@ from starlette.responses import JSONResponse
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.templating import Jinja2Templates
 from func.middleware import Mid
+from func.tg import Telegram
 
 app = FastAPI(access_log=False)
 # gzip流文件处理
@@ -25,10 +26,13 @@ os.makedirs('./static', exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 # 初始化function
 app.state.func = Func()
+# 初始化ad_count
+app.state.ad_count = 0
 # 线程管理
 app.state.executor = ThreadPoolExecutor(32)
 # 创建一个templates（模板）对象，以后可以重用。
 app.state.templates = Jinja2Templates(directory="page")
+
 # 配置日志记录器
 logging.getLogger('httpx').setLevel(logging.ERROR)
 logger = logging.getLogger()
@@ -60,6 +64,7 @@ async def exception_handler(request: Request, exc: Exception):
 
 @app.middleware("http")
 async def middleware(request: Request, call_next):
+
     resp = await Mid().middleware(app, request, call_next)
     return resp
 

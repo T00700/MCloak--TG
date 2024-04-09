@@ -31,6 +31,6 @@
     其它蜘蛛: true
     其他蜘蛛: true
 
-【Telegram机器人】: # telegram机器人设置后，将定时发送服务器状态至telegram群组
+【Telegram机器人】: # telegram机器人设置后，广告出发时将发送消息至telegram群组
   Bot-Token: 'Bot-Token'
   群组ID: ''
