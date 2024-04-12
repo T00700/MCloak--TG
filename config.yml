@@ -1,7 +1,7 @@
 【斗篷设置】:
   绑定域名: ['localhost']
   广告地址: 'ad.html' # 填写./page文件夹中的页面，或直接填写网站链接(链接将通过301跳转过去)
-  模式: "正常"  # 正常/广告  正常模式下所有请求默认返回正常页面，广告模式下所有请求默认返回广告页面
+  模式: "正常"  # 正常/广告/goto  正常模式下所有请求默认返回正常页面，广告模式下所有请求默认返回广告页面，goto模式仅内链/goto默认返回设置的链接
   正常模式:
     指定首选语言跳广告: 'zh' # 指定语言后，仅对目标语言的浏览器过来的请求做跳转判断
     仅搜索来路跳广告: False # True/False 开启后，仅对从搜索引擎(谷歌/必应/百度/搜狗/360)点过来的请求做跳转判断
@@ -11,9 +11,16 @@
     指定首选语言跳文章页: 'en'
     指定IP段跳文章页: '168.168.168.*|88.88.88.88'
     指定地区跳文章页: '中国|香港'
+  goto模式:
+    广告链接设置:  # 以下[]列表中，第一个为正常页面链接(或./page中的页面)，第二个为广告页面链接(或./page中的页面)
+      anypagename: ['index.html','ad.html']
+    指定首选语言跳广告: 'zh' # 指定语言后，仅对目标语言的浏览器过来的请求做跳转判断
+    仅搜索来路跳广告: False # True/False 开启后，仅对从搜索引擎(谷歌/必应/百度/搜狗/360)点过来的请求做跳转判断
+    指定IP段跳广告: '168.168.168.*|88.88.88.88'
+    指定地区跳广告: '局域网'
 
 【安全策略】: # 屏蔽指定的UA头和IP段，防止恶意访问
-  UA黑名单: 'Scrapy|Curl|HttpClient|UniversalFeedParser|lightDeckReports Bot|heritrix|Java|Bytespider|YandexBot|FlightDeckReports|Indy Library|BOT/0.1|DigExt|Feedly|Swiftbot|oBot|Python-urllib|CrawlDaddy|YYSpider|JikeSpider|ZmEu|MJ12bot|WebZIP|Apache-HttpAsyncClient|HttpClient|WinHttp|jaunty|Alexa Toolbar|LinkpadBot|Microsoft URL Control|node-superagent|Ezooms|Jullo|SemrushBot|FetchURL|AhrefsBot|EasouSpider|java/|CoolpadWebkit|Linguee Bot|ApacheBench|AskTbFXTV|FeedDemon'
+  UA黑名单: 'TelegramBot|Scrapy|Curl|HttpClient|UniversalFeedParser|lightDeckReports Bot|heritrix|Java|Bytespider|YandexBot|FlightDeckReports|Indy Library|BOT/0.1|DigExt|Feedly|Swiftbot|oBot|Python-urllib|CrawlDaddy|YYSpider|JikeSpider|ZmEu|MJ12bot|WebZIP|Apache-HttpAsyncClient|HttpClient|WinHttp|jaunty|Alexa Toolbar|LinkpadBot|Microsoft URL Control|node-superagent|Ezooms|Jullo|SemrushBot|FetchURL|AhrefsBot|EasouSpider|java/|CoolpadWebkit|Linguee Bot|ApacheBench|AskTbFXTV|FeedDemon'
   IP黑名单: '168.168.168.*|88.88.88.88'
 
 【蜘蛛策略】:
@@ -32,5 +39,5 @@
     其他蜘蛛: true
 
 【Telegram机器人】: # telegram机器人设置后，广告出发时将发送消息至telegram群组
-  # Bot-Token: 'Bot-Token'
-  # 群组ID: ''
+  Bot-Token: 'Bot-Token'
+  群组ID: ''
