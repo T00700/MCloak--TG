@@ -109,8 +109,10 @@ async def goto(request: Request, response: Response, path=""):
         ok_link, ad_link = config['【斗篷设置】']['goto模式']['广告链接设置'][path]
         if res_ip in cache:
             # 触发跳转
-            tg_mes = f"""【{app.state.ad_count}】{cache[res_ip]} goto:{ad_link}"""
-            app.state.executor.submit(asyncio.run, request.state.tg.send_mes(tg_mes))
+            cache_mes = cache.get(res_ip)
+            tg_mes = f"""【{app.state.ad_count}】{cache_mes} goto:{ad_link}"""
+            app.state.executor.submit(asyncio.run,
+                                      request.state.tg.send_mes(tg_mes))
             if ad_link.startswith('http://') or ad_link.startswith('https://'):
                 return RedirectResponse(url=ad_link, status_code=301)
             datas = {"request": request}
