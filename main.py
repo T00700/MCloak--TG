@@ -132,7 +132,7 @@ async def goto(request: Request, response: Response, path=""):
 @app.get("{path:path}")
 async def route(request: Request, response: Response, path=""):
     """主路由"""
-    
+    datas = {"request": request}
     mode = request.state.config["【斗篷设置】"]['模式']
     if mode == '正常' or mode == 'goto':
         return app.state.templates.TemplateResponse(
