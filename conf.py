@@ -4,6 +4,8 @@ import logging
 import multiprocessing
 from gunicorn.glogging import Logger
 
+from func.function import Func
+
 
 class CustomLogger(Logger):
     """Custom logger for Gunicorn log messages."""
@@ -16,7 +18,8 @@ class CustomLogger(Logger):
 
 
 x_forwarded_for_header = "X-Real-IP"
-bind = '0.0.0.0:11888'
+port = Func().getYml('config.yml')["【斗篷设置】"]['端口']
+bind = f'0.0.0.0:{port}'
 # workers = multiprocessing.cpu_count() * 2 + 1  # 并行工作进程数
 workers = 1  # 并行工作进程数
 worker_class = 'uvicorn.workers.UvicornWorker'  # 还可以使用gevent模式，还可以使用sync模式，默认sync模式

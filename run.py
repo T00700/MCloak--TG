@@ -5,13 +5,14 @@ import os
 import re
 import time
 import click
+from func.function import Func
 
 
-def createj_nginx_conf(port):
+def createj_nginx_conf(port, domain):
     "自动创建nginx配置文件"
     if not os.path.exists("logs"):
         os.makedirs("./logs")
-    path = "/www/server/panel/vhost/nginx/MyCloak.conf"
+    path = f"/www/server/panel/vhost/nginx/{domain}.conf"
     if os.path.exists(path):
         with open(path, "r", encoding='utf8') as f:
             conf = f.read()
@@ -20,7 +21,7 @@ def createj_nginx_conf(port):
         conf = """server
 {
     listen 80;
-    server_name _;
+    server_name 【域名】;
     index index.html;
     root /www/server/nginx/html;
     location / {
@@ -47,9 +48,9 @@ def createj_nginx_conf(port):
     # 承接上面的location。
     location = /50x.html {
     # 放错误页面的目录路径。当然默认可以在网站目录下，也可以定义放置错误页面的位置。
-        root   /www/wwwroot/MyCloak/page;
+        root   /www/wwwroot/【域名】/page;
     }
-}""".replace("【端口号】", port)
+}""".replace("【端口号】", port).replace('【域名】', domain)
         with open(path, "w", encoding='utf8') as f:
             f.write(conf)
         print(f"{conf}\n\nnignx配置文件已生成")
@@ -60,8 +61,10 @@ def createj_nginx_conf(port):
 
 def start():
     "开始"
-    port = "11888"
-    createj_nginx_conf(port)
+    config = Func().getYml('config.yml')
+    port = config["【斗篷设置】"]['端口']
+    domain = config["【斗篷设置】"]['绑定域名']
+    createj_nginx_conf(port, domain)
     content = "gunicorn -c conf.py main:app -k uvicorn.workers.UvicornWorker --daemon"
     os.popen(content)
     print('程序已运行')
@@ -74,11 +77,11 @@ def close():
     if "|-gunicorn," in result:
         print('程序后台运行中，正在关闭进程...')
         program_name = os.path.basename(os.path.abspath('.'))
-        sid = re.findall(r'gunicorn,(\d+).*?/'+program_name, result)
+        sid = re.findall(r'gunicorn,(\d+).*?/' + program_name, result)
         print(sid)
         for i in sid:
             kill = f"kill -9 {i}"
-            print(kill+f" from {program_name}")
+            print(kill + f" from {program_name}")
             os.system(kill)
 
 

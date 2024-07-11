@@ -149,4 +149,5 @@ async def route(request: Request, response: Response, path=""):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=11888)
+    config = app.state.func.getYml('config.yml')
+    uvicorn.run(app, host="127.0.0.1", port=config["【斗篷设置】"]['端口'])
