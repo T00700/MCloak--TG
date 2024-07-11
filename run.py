@@ -54,7 +54,7 @@ def createj_nginx_conf(port, domain):
         with open(path, "w", encoding='utf8') as f:
             f.write(conf)
         print(f"{conf}\n\nnignx配置文件已生成")
-        content = "nginx service restart"
+        content = "service nginx restart"
         os.popen(content)
         print("nignx服务已重启")
 
