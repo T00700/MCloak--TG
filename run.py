@@ -63,7 +63,7 @@ def start():
     "开始"
     config = Func().getYml('config.yml')
     port = config["【斗篷设置】"]['端口']
-    domain = config["【斗篷设置】"]['绑定域名']
+    domain = config["【斗篷设置】"]['绑定域名'][0]
     createj_nginx_conf(port, domain)
     content = "gunicorn -c conf.py main:app -k uvicorn.workers.UvicornWorker --daemon"
     os.popen(content)
