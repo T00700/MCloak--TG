@@ -50,7 +50,7 @@ def createj_nginx_conf(port, domain):
     # 放错误页面的目录路径。当然默认可以在网站目录下，也可以定义放置错误页面的位置。
         root   /www/wwwroot/【域名】/page;
     }
-}""".replace("【端口号】", port).replace('【域名】', domain)
+}""".replace("【端口号】", str(port)).replace('【域名】', domain)
         with open(path, "w", encoding='utf8') as f:
             f.write(conf)
         print(f"{conf}\n\nnignx配置文件已生成")
