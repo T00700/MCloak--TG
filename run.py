@@ -60,7 +60,7 @@ server {
             f.write(conf)
         print(f"{conf}\n\nnignx配置文件已生成")
         content = f"service nginx stop && certbot certonly --standalone --email seo888@gmx.com -w /www/wwwroot/ -d {domain} && service nginx start"
-        os.popen(content)
+        os.system(content)
         print("nignx服务已重启")
 
 
