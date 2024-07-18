@@ -56,10 +56,13 @@ server {
  root /www/wwwroot/【域名】/page;
  }
 }""".replace("【端口号】", str(port)).replace('【域名】', domain)
+        content = f"service nginx stop && certbot certonly --standalone --email seo888@gmx.com -w /www/wwwroot/ -d {domain} && service nginx start"
+        os.system(content)
+        print("https证书已生成")
         with open(path, "w", encoding='utf8') as f:
             f.write(conf)
         print(f"{conf}\n\nnignx配置文件已生成")
-        content = f"service nginx stop && certbot certonly --standalone --email seo888@gmx.com -w /www/wwwroot/ -d {domain} && service nginx start"
+        content = "service nginx restart"
         os.system(content)
         print("nignx服务已重启")
 
