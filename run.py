@@ -18,43 +18,48 @@ def createj_nginx_conf(port, domain):
             conf = f.read()
         print(f"{conf}\n\n以上为nignx配置信息")
     else:
-        conf = """server
-{
-    listen 80;
-    server_name 【域名】;
-    index index.html;
-    root /www/server/nginx/html;
-    location / {
-        proxy_pass http://127.0.0.1:【端口号】;
-        proxy_pass_header Server;
-        proxy_redirect off;
-        proxy_set_header X-Real-IP $remote_addr; #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        #以下是一些反向代理的配置,可选.
-        proxy_set_header Host $host;
-        client_max_body_size 10m; #允许客户端请求的最大单文件字节数
-        client_body_buffer_size 128k; #缓冲区代理缓冲用户端请求的最大字节数,
-        proxy_connect_timeout 90; #nginx跟后端服务器连接超时时间(代理连接超时)
-        proxy_send_timeout 90; #后端服务器数据回传时间(代理发送超时)
-        proxy_read_timeout 90; #连接成功后,后端服务器响应时间(代理接收超时)
-        proxy_buffer_size 4k; #设置代理服务器（nginx）保存用户头信息的缓冲区大小
-        proxy_buffers 4 32k; #proxy_buffers缓冲区,网页平均在32k以下的设置
-        proxy_busy_buffers_size 64k; #高负荷下缓冲大小（proxy_buffers*2）
-        proxy_temp_file_write_size 64k;
-        #设定缓存文件夹大小,大于这个值,将从upstream服务器传
-    }
-    # 定义错误页面码，如果出现相应的错误页面码，转发到那里。
-    error_page  500 502 503 504  /50x.html;
-    # 承接上面的location。
-    location = /50x.html {
-    # 放错误页面的目录路径。当然默认可以在网站目录下，也可以定义放置错误页面的位置。
-        root   /www/wwwroot/【域名】/page;
-    }
+        conf = """server {
+ listen 80;
+ server_name 【域名】;
+ return 301 https://$host$request_uri;
+}
+
+server {
+ listen 443 ssl;
+ server_name 【域名】;
+ index index.html;
+ root /www/server/nginx/html;
+
+ ssl_certificate /etc/letsencrypt/live/【域名】/fullchain.pem;
+ ssl_certificate_key /etc/letsencrypt/live/【域名】/privkey.pem;
+
+ location / {
+ proxy_pass http://127.0.0.1:【端口号】;
+ proxy_pass_header Server;
+ proxy_redirect off;
+ proxy_set_header X-Real-IP $remote_addr;
+ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+ proxy_set_header Host $host;
+ client_max_body_size 10m;
+ client_body_buffer_size 128k;
+ proxy_connect_timeout 90;
+ proxy_send_timeout 90;
+ proxy_read_timeout 90;
+ proxy_buffer_size 4k;
+ proxy_buffers 4 32k;
+ proxy_busy_buffers_size 64k;
+ proxy_temp_file_write_size 64k;
+ }
+
+ error_page 500 502 503 504 /50x.html;
+ location = /50x.html {
+ root /www/wwwroot/【域名】/page;
+ }
 }""".replace("【端口号】", str(port)).replace('【域名】', domain)
         with open(path, "w", encoding='utf8') as f:
             f.write(conf)
         print(f"{conf}\n\nnignx配置文件已生成")
-        content = "service nginx restart"
+        content = f"service nginx stop && certbot certonly --standalone --email seo888@gmx.com -w /www/wwwroot/ -d {domain} && service nginx start"
         os.popen(content)
         print("nignx服务已重启")
 
