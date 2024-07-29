@@ -3,7 +3,6 @@
 import logging
 import multiprocessing
 from gunicorn.glogging import Logger
-
 from func.function import Func
 
 

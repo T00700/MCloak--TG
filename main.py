@@ -28,6 +28,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.state.func = Func()
 # 初始化ad_count
 app.state.ad_count = 0
+# 初始化user_count
+app.state.user_count = 0
 # 初始化缓存器
 app.state.cache = Cache(ttl=300)
 # 线程管理
@@ -110,9 +112,8 @@ async def goto(request: Request, response: Response, path=""):
         if res_ip in cache:
             # 触发跳转
             cache_mes = cache.get(res_ip)
-            tg_mes = f"""【{app.state.ad_count}】{cache_mes} goto:{ad_link}"""
-            app.state.executor.submit(asyncio.run,
-                                      request.state.tg.send_mes(tg_mes))
+            tg_mes = f"""【{app.state.ad_count}】{cache_mes} goto跳广告:{ad_link}"""
+            app.state.executor.submit(asyncio.run, request.state.tg.send_mes(tg_mes))
             if ad_link.startswith('http://') or ad_link.startswith('https://'):
                 return RedirectResponse(url=ad_link, status_code=301)
             datas = {"request": request}
